@@ -49,21 +49,26 @@ export async function updateTexts(req: Request, res: Response) {
 
 export async function Login(req: Request, res: Response) {
   try {
-    const { data } = await supabase
+    // user exists
+    const { data: existUser } = await supabase
       .from("User")
       .select("*")
       .eq("email", req.user.email);
-    if (data) res.status(200).json({ user: data });
-    else {
-      // TODO: user name is dependant on gmail
-      const { data, error } = await supabase.rpc("create_return_user", {
-        email: req.user.email,
-        name: req.user.name,
-      });
-      if (error || !data)
-        res.status(400).json({ error: "Can't initialize user" });
-      else res.status(200).json({ message: data });
-    }
+    if (existUser && existUser.length > 0)
+      return res.status(200).json({ user: existUser[0] });
+
+    // user not exists
+    const { data: newUser, error } = await supabase
+      .from("User")
+      .insert({ email: req.user.email, name: req.user.name })
+      .select();
+    console.log(newUser);
+    console.log(error);
+
+    if (error || newUser === null || newUser.length === 0)
+      return res.status(400).json({ error: "Can't initialize user" });
+
+    res.status(200).json({ user: newUser[0] });
   } catch (error) {
     throw error;
   }
