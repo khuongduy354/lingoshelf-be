@@ -8,6 +8,7 @@ const PORT = 8000;
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 setupFirebase();
 SetupRoutes(app);
 app.get("/test", (req, res) => {
