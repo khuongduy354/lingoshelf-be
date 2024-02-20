@@ -18,3 +18,10 @@ app.get("/test", (req, res) => {
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
 });
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", reason, "promise:", promise);
+});
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught Exception thrown", error);
+});
