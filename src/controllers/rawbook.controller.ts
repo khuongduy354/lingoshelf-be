@@ -79,4 +79,44 @@ const deleteBook = async (req: Request, res: Response) => {
     throw e;
   }
 };
-export const RawBookController = { getMyBooks, uploadBook, deleteBook };
+
+const bookmark = async (req: Request, res: Response) => {
+  try {
+    const { bookmarks } = req.body;
+    if (!Array.isArray(bookmarks))
+      return res.status(400).json({ message: "Invalid bookmarks" });
+
+    const { error } = await supabase
+      .from("Book")
+      .update({ bookmarks })
+      .eq("owner", req.user.id);
+    if (error) throw error;
+    res.status(200).json({ message: "Bookmarks updated" });
+  } catch (e) {
+    throw e;
+  }
+};
+const trackProgress = async (req: Request, res: Response) => {
+  try {
+    const { currLocation } = req.body;
+    if (typeof currLocation !== "string")
+      return res.status(400).json({ message: "Invalid progress" });
+
+    const { error } = await supabase
+      .from("Book")
+      .update({ currLocation })
+      .eq("owner", req.user.id);
+
+    if (error) throw error;
+    res.status(200).json({ message: "Progress updated" });
+  } catch (e) {
+    throw e;
+  }
+};
+export const RawBookController = {
+  getMyBooks,
+  uploadBook,
+  deleteBook,
+  bookmark,
+  trackProgress,
+};

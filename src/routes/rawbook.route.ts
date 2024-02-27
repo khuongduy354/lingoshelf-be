@@ -28,6 +28,18 @@ RawBookRoute.delete(
   authCheckPopulateUser,
   RawBookController.deleteBook
 );
+RawBookRoute.patch(
+  "/book/progress",
+  authCheckPopulateUser,
+  upload.array("books", 10),
+  RawBookController.trackProgress
+);
+RawBookRoute.patch(
+  "/book/bookmark",
+  authCheckPopulateUser,
+  upload.array("books", 10),
+  RawBookController.bookmark
+);
 RawBookRoute.post(
   "/book",
   authCheckPopulateUser,
