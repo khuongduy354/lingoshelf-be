@@ -6,6 +6,6 @@ export const supabase = createClient(
 );
 export const getBucketUrl = (filename: string) => {
   const base =
-    "https://oeuvmrrvzwmiyhbknqct.supabase.co/storage/v1/object/public/LingoShelf/";
+    "https://plmbvfliubcdtxkoubom.supabase.co/storage/v1/object/public/LingoShelf/";
   return base + filename;
 };

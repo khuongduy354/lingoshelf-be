@@ -35,7 +35,7 @@ const uploadBook = async (req: Request, res: Response) => {
     await Promise.all(
       req.files?.map((file) => {
         //format filename
-        let fileName: string = "Books/" + file.originalname;
+        let fileName: string = file.originalname;
         let filearr = fileName.split(".");
         let ext = filearr.pop();
         fileName = filearr.join("");
@@ -44,7 +44,7 @@ const uploadBook = async (req: Request, res: Response) => {
 
         return supabase.storage
           .from("LingoShelf")
-          .upload(fileName, file.buffer)
+          .upload("Books/" + fileName, file.buffer)
           .then((res) => {
             const { error } = res;
             if (error) throw error;
