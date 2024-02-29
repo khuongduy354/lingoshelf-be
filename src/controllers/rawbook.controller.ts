@@ -105,7 +105,8 @@ const trackProgress = async (req: Request, res: Response) => {
     const { error } = await supabase
       .from("Book")
       .update({ currLocation })
-      .eq("owner", req.user.id);
+      .eq("owner", req.user.id)
+      .eq("id", req.params.id);
 
     if (error) throw error;
     res.status(200).json({ message: "Progress updated" });
